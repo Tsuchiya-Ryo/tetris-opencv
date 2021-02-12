@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>operation-cv2</title>
+</head>
+<body>
+    <div class="container">
+        <br>
+        <br>
+        <h2>OpenCVでテトリスをプレイ</h2>
+        <br>
+        <p><a href="https://github.com/Tsuchiya-Ryo/ToolsAndTests" target="_blank">自分のコード(operate.py)</a><br>
+           <a href="https://harshilp.medium.com/playing-chromes-dinosaur-game-using-opencv-19b3cf9c3636" target="_blank">コード引用元</a></p>
+
+        <div class="vid1">
+        <video src="tetmini.mp4" loop autoplay muted></video>
+        </div>
+        <br>
+        <br>
+        <br>
+        <hr>
+        <h3>処理の流れ</h3>
+        <p>元画像<br>
+        <img src="./images/original.jpg"></p>
+        <br>
+        <p>・ノイズ除去のgaussian blur<br>
+        ・hsv変換からの色相範囲指定でおよそ肌色の領域を捉えてマスク化<br>
+        <img src="./images/mask1.jpg"></p>
+        <br>
+        <p>まだ手の"内側"にノイズがあるので<br>
+            ・クロージング処理(膨張 → 収縮)<br>
+            <img src="./images/closing.jpg"></p>
+        <br>
+        <p>二値画像から輪郭(緑線)を検出、重心を計算(赤丸)<br>
+        (対象は手の一つのみとしているので領域が最大の輪郭を選択)<br>
+        <b>ここで算出した重心位置をもとに上下左右の入力判定を行う。</b><br>
+        <img src="./images/contour2.jpg"></p>
+        <br>
+        <p>一方で輪郭に関して凸包(緑線)と欠陥点を計算(赤点)<br>
+        <img src="./images/convexhull.jpg"></p>
+        <br>
+        <p>欠陥箇所に関して三角形を考え、欠陥点の頂点の角度を計算する<br>
+        この角度が90°以下のところを手の指の隙間と判定する<br>
+        (↓の画像では人差し指, 中指からなる緑線と、その間の欠陥点(赤点)ついて三角形を考えている。<br>
+        ここでは欠陥点の頂点の角度が34.6°と計算された。よってこの欠陥点は指の隙間と判定できる。)<br>
+        <b>手をパーにしているのかグーにしているのかなどの判定は、指の隙間であると判定された箇所の個数から決めている。<br>
+            (パーは4つ, グーは0つ)</b><br>
+        <img src="./images/calcangle.jpg"></p>
+        <br>
+        <p>引用元の記事ではグーとパーのみの判定であったが、<br>
+        手の輪郭の面積と凸包の面積との比率という指標も用意した。<br>
+        これらを組み合わせることで、判別可能なパターンを少しだけ増やした。<br>
+        <div class="signs">
+            <img src="./images/neutral-mini.png"><img src="images/right-mini.png"><img src="./images/left-mini.png"><br>
+            <img src="./images/hold-mini.png"><img src="images/harddrop-mini.png"><img src="./images/lspin-mini.png"><br>
+            <img src="./images/rspin-mini.png"><img src="images/thumbup-mini.png"><img src="./images/fingergun-mini.png"><br>
+            特にThumb UpとFinger Gunはどちらも指の隙間が1つと判定される。<br>
+            ここで先ほど述べた輪郭と凸包の面積比を使うことで両者を判別できる。
+        </div>
+        <br>
+        <br>
+        <p>以上の判別結果からpyautoguiを用いてキーボード入力に変換し、<a href="https://jstris.jezevec10.com/" target="_blank">ブラウザ上のテトリス</a>をプレイした。</p>
+        <p>実際のテトリスの操作にあたってはThumb UpとFinger Gunの手の形は使用していない。<br>
+        (それほど入力パターンは必要なかった)<br>
+        また、R-Spin, L-Spinはそれぞれテトリミノの時計回り(CW)、反時計回り(CCW)の回転である。</p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+</p>
+
+
+</body>
+</html>
