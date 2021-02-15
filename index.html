@@ -15,7 +15,7 @@
         <h2>OpenCVでテトリスをプレイ</h2>
         <br>
         <p><a href="https://github.com/Tsuchiya-Ryo/ToolsAndTests" target="_blank">自分のコード(operate.py)</a><br>
-           <a href="https://harshilp.medium.com/playing-chromes-dinosaur-game-using-opencv-19b3cf9c3636" target="_blank">コード引用元</a></p>
+           <a href="https://harshilp.medium.com/playing-chromes-dinosaur-game-using-opencv-19b3cf9c3636" target="_blank">引用元</a></p>
 
         <div class="vid1">
         <video src="tetmini.mp4" loop autoplay muted></video>
@@ -28,12 +28,12 @@
         <p>元画像<br>
         <img src="./images/original.jpg"></p>
         <br>
-        <p>・ノイズ除去のgaussian blur<br>
-        ・hsv変換からの色相範囲指定でおよそ肌色の領域を捉えてマスク化<br>
+        <p>ノイズ除去のgaussian blur<br>
+        hsv変換からの色相範囲指定でおよそ肌色の領域を捉えてマスク化<br>
         <img src="./images/mask1.jpg"></p>
         <br>
         <p>まだ手の"内側"にノイズがあるので<br>
-            ・クロージング処理(膨張 → 収縮)<br>
+            クロージング処理(膨張 → 収縮)<br>
             <img src="./images/closing.jpg"></p>
         <br>
         <p>二値画像から輪郭(緑線)を検出、重心を計算(赤丸)<br>
@@ -49,7 +49,7 @@
         (↓の画像では人差し指, 中指からなる緑線と、その間の欠陥点(赤点)ついて三角形を考えている。<br>
         ここでは欠陥点の頂点の角度が34.6°と計算された。よってこの欠陥点は指の隙間と判定できる。)<br>
         <b>手をパーにしているのかグーにしているのかなどの判定は、指の隙間であると判定された箇所の個数から決めている。<br>
-            (パーは4つ, グーは0つ)</b><br>
+            (パーは4コ, グーは0コ)</b><br>
         <img src="./images/calcangle.jpg"></p>
         <br>
         <p>引用元の記事ではグーとパーのみの判定であったが、<br>
